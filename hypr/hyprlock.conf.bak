@@ -10,107 +10,119 @@ general {
 background {
     monitor =
     path = /home/adrien/.config/hypr/wallpapers/ToriPixel.png
-    blur_size = 10
-    blur_passes = 4
+    blur_size = 5
+    blur_passes = 2
     noise = 0.02
     contrast = 0.9
-    brightness = 0.50
-    vibrancy = 0.05
+    brightness = 0.65
+    vibrancy = 0.08
     vibrancy_darkness = 0.0
 }
 
-# Heure — gauche, massive
+# Heure
 label {
     monitor =
     text = cmd[update:1000] echo "$(date +'%H:%M')"
     color = rgba(C8D1E9ff)
-    font_size = 140
-    font_family = JetBrainsMono NF ExtraBold
+    font_size = 90
+    font_family = JetBrains Mono DemiBold
     shadow_passes = 3
-    shadow_size = 20
-    shadow_color = rgba(000000bb)
-    shadow_boost = 1.0
-    position = 96, 60
-    halign = left
+    shadow_size = 8
+    shadow_color = rgba(000000cc)
+    shadow_boost = 1.2
+    position = 0, 200
+    halign = center
     valign = center
 }
 
-# Séparateur
-label {
-    monitor =
-    text = ──────────────
-    color = rgba(C8D1E930)
-    font_size = 8
-    font_family = JetBrainsMono NF SemiBold
-    shadow_passes = 0
-    position = 100, -20
-    halign = left
-    valign = center
-}
-
-# Date — gauche, fine
+# Date
 label {
     monitor =
     text = cmd[update:60000] echo "$(LC_TIME=fr_FR.UTF-8 date +'%A, %d %B')"
-    color = rgba(7AAEDDaa)
-    font_size = 12
-    font_family = JetBrainsMono NF Light
-    shadow_passes = 0
-    position = 102, -44
-    halign = left
+    color = rgba(7AAEDDff)
+    font_size = 15
+    font_family = JetBrains Mono DemiBold
+    shadow_passes = 2
+    shadow_size = 6
+    shadow_color = rgba(000000cc)
+    shadow_boost = 1.2
+    position = 0, 108
+    halign = center
     valign = center
 }
 
-# Météo — bas gauche (aligné avec l'horloge)
+# Utilisateur
+label {
+    monitor =
+    text = $USER
+    color = rgba(7AAEDDcc)
+    font_size = 13
+    font_family = JetBrains Mono DemiBold
+    shadow_passes = 2
+    shadow_size = 6
+    shadow_color = rgba(000000cc)
+    shadow_boost = 1.2
+    position = 0, -20
+    halign = center
+    valign = center
+}
+
+# Météo (bas centre gauche)
 label {
     monitor =
     text = cmd[update:300000] curl -s --max-time 5 "wttr.in/?format=%c+%t" 2>/dev/null || echo "─"
-    color = rgba(C8D1E966)
-    font_size = 12
-    font_family = JetBrainsMono NF SemiBold
-    shadow_passes = 0
-    position = 96, 36
-    halign = left
+    color = rgba(C8D1E9cc)
+    font_size = 13
+    font_family = JetBrains Mono DemiBold
+    shadow_passes = 2
+    shadow_size = 6
+    shadow_color = rgba(000000cc)
+    shadow_boost = 1.2
+    position = -80, 40
+    halign = center
     valign = bottom
 }
 
-# Batterie — bas droite
+# Batterie (bas centre droite)
 label {
     monitor =
     text = cmd[update:30000] BAT=$(cat /sys/class/power_supply/BAT0/capacity); STATUS=$(cat /sys/class/power_supply/BAT0/status); if [ "$STATUS" = "Charging" ]; then ICON="󰂄"; COLOR="DDAC26"; elif [ "$STATUS" = "Full" ]; then ICON="󰁹"; COLOR="7AAEDD"; elif [ $BAT -ge 80 ]; then ICON="󰂂"; COLOR="C8D1E9"; elif [ $BAT -ge 60 ]; then ICON="󰁿"; COLOR="C8D1E9"; elif [ $BAT -ge 40 ]; then ICON="󰁼"; COLOR="C8D1E9"; elif [ $BAT -ge 20 ]; then ICON="󰁻"; COLOR="F96565"; else ICON="󰁺"; COLOR="F96565"; fi; echo "<span foreground='##${COLOR}'>${ICON}</span> ${BAT}%"
     color = rgba(C8D1E9ff)
-    font_size = 12
-    font_family = JetBrainsMono NF SemiBold
-    shadow_passes = 0
-    position = -40, 36
-    halign = right
+    font_size = 13
+    font_family = JetBrains Mono DemiBold
+    shadow_passes = 2
+    shadow_size = 6
+    shadow_color = rgba(000000cc)
+    shadow_boost = 1.2
+    position = 80, 40
+    halign = center
     valign = bottom
 }
 
-# Champ mot de passe — centré, bas
+# Champ mot de passe
 input-field {
     monitor =
-    size = 260, 44
+    size = 300, 48
     outline_thickness = 1
     dots_size = 0.2
     dots_spacing = 0.3
     dots_center = true
     dots_rounding = -1
-    outer_color = rgba(C8D1E918)
-    inner_color = rgba(01010Fdd)
+    outer_color = rgba(C8D1E930)
+    inner_color = rgba(01010Faa)
     font_color = rgba(C8D1E9ff)
-    font_family = JetBrainsMono NF Light
+    font_family = JetBrains Mono DemiBold
     fade_on_empty = true
     fade_timeout = 1200
-    placeholder_text = <span foreground="##40C8D1E9"><i>mot de passe</i></span>
+    placeholder_text = <span foreground="##60C8D1E9"><i>mot de passe</i></span>
     hide_input = false
-    rounding = 22
+    rounding = 8
     check_color = rgba(7AAEDDff)
     fail_color = rgba(F96565ff)
     fail_text = <span foreground="##F96565"><i>$FAIL  ($ATTEMPTS)</i></span>
     fail_timeout = 2000
     capslock_color = rgba(F96565bb)
-    position = 0, -160
+    position = 0, -88
     halign = center
     valign = center
 }
