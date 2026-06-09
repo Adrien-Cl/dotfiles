@@ -1,0 +1,48 @@
+format = """
+╭─$directory$git_branch$git_status$cmd_duration
+╰─$character"""
+
+add_newline = true
+
+[character]
+success_symbol = "[❯](bold #C8D1E9)"
+error_symbol   = "[❯](bold #F96565)"
+
+[directory]
+style            = "bold #7AAEDD"
+truncation_length = 3
+truncate_to_repo = true
+format           = "[$path]($style) "
+
+[git_branch]
+symbol = " "
+style  = "bold #DDAC26"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style            = "#F96565"
+conflicted       = "✖ "
+ahead            = "⇡${count} "
+behind           = "⇣${count} "
+diverged         = "⇕ "
+untracked        = "? "
+stashed          = "≡ "
+modified         = "! "
+staged           = "+ "
+renamed          = "» "
+deleted          = "✘ "
+format           = "([$all_status$ahead_behind]($style))"
+
+[cmd_duration]
+min_time = 2000
+style    = "dimmed #C8D1E9"
+format   = " [ $duration]($style)"
+
+[username]
+disabled = true
+
+[hostname]
+disabled = true
+
+[line_break]
+disabled = false

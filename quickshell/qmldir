@@ -1,0 +1,4 @@
+singleton Theme 1.0 theme.qml
+singleton KdeConnectState 1.0 KdeConnectState.qml
+singleton NotificationState 1.0 NotificationState.qml
+Bar 1.0 Bar.qml

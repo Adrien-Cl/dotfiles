@@ -1,0 +1,20 @@
+# ── Clés privées ─────────────────────────────────────────────────────────────
+kdeconnect/
+
+# ── Navigateurs ───────────────────────────────────────────────────────────────
+mozilla/
+chromium/
+google-chrome/
+BraveSoftware/
+
+# ── Apps avec tokens d'auth ───────────────────────────────────────────────────
+discord/
+vesktop/
+spotify/
+teams-for-linux/
+
+# ── Données d'app (pas de config utile) ──────────────────────────────────────
+onlyoffice/
+dconf/
+pulse/
+VSCodium/

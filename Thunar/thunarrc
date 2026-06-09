@@ -1,0 +1,9 @@
+[Configuration]
+DefaultView=ThunarDetailsView
+LastView=ThunarDetailsView
+ShowHidden=FALSE
+SidebarWidth=160
+LastWindowWidth=1000
+LastWindowHeight=650
+SortColumn=THUNAR_COLUMN_NAME
+SortOrder=ascending

@@ -1,0 +1,10 @@
+[SddmGreeterTheme]
+Name=adrien-minimal
+Description=Minimal dark theme matching hyprland rice
+Author=adrien
+Version=1.0
+License=MIT
+Type=sddm-theme
+Theme-API=2.0
+MainScript=Main.qml
+ConfigFile=theme.conf

@@ -1,0 +1,102 @@
+configuration {
+    modi:                "drun";
+    show-icons:          true;
+    drun-display-format: "{name}";
+    icon-theme:          "Papirus-Dark";
+    font:                "JetBrains Nerd Font 13";
+}
+
+* {
+    bg0:    #010110b3;
+    bg1:    #08081acc;
+    bg2:    #0e0e26;
+    fg0:    #C8D1E9;
+    fg1:    #5a6180;
+    accent: #DDAC26;
+    sel:    #1e1e40;
+
+    background-color: transparent;
+    text-color:       @fg0;
+    border-color:     transparent;
+}
+
+window {
+    background-color: @bg0;
+    border:           1px solid;
+    border-color:     #252545;
+    border-radius:    14px;
+    width:            580px;
+    padding:          0px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+    spacing:  0px;
+    padding:  0px;
+}
+
+inputbar {
+    background-color: transparent;
+    border-radius:    14px 14px 0px 0px;
+    padding:          16px 20px;
+    spacing:          10px;
+    children:         [ prompt, entry ];
+}
+
+prompt {
+    enabled: false;
+}
+
+entry {
+    placeholder:       "Lancer une application…";
+    placeholder-color: @fg1;
+    cursor:            text;
+    vertical-align:    0.5;
+}
+
+separator {
+    height:           0px;
+    border:           0px;
+}
+
+listview {
+    background-color: transparent;
+    border:           0px;
+    padding:          8px;
+    spacing:          1px;
+    lines:            5;
+    scrollbar:        false;
+    fixed-height:     false;
+    border-radius:    0px 0px 14px 14px;
+}
+
+element {
+    background-color: transparent;
+    border-radius:    8px;
+    padding:          9px 12px;
+    spacing:          12px;
+    children:         [ element-icon, element-text ];
+    orientation:      horizontal;
+    cursor:           pointer;
+}
+
+element normal normal   { background-color: transparent; text-color: @fg0; }
+element alternate normal { background-color: transparent; text-color: @fg0; }
+
+element selected normal {
+    background-color: @sel;
+    text-color:       #ffffff;
+}
+
+element-icon {
+    size:             20px;
+    vertical-align:   0.5;
+    background-color: transparent;
+}
+
+element-text {
+    vertical-align:   0.5;
+    background-color: transparent;
+    text-color:       @fg0;
+    highlight:        bold #DDAC26;
+}

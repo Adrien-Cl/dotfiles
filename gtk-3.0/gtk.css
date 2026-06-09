@@ -1,0 +1,224 @@
+/* Palette : bg #01010F · text #C8D1E9 · accent rgba(200,209,233,X) */
+/* GTK3 CSS — pas de !important (non supporté par le parser GTK3)    */
+/* User CSS a priorité 800 > thème 200 : les règles l'emportent seules */
+
+* { outline: none; }
+
+/* ── Fenêtre ── */
+window, .background {
+  background-color: #01010F;
+  color: #C8D1E9;
+}
+
+/* ── Viewport / ScrolledWindow ── */
+viewport {
+  background-color: #01010F;
+  color: #C8D1E9;
+}
+scrolledwindow { background-color: #01010F; }
+scrolledwindow undershoot,
+scrolledwindow overshoot { background: transparent; }
+
+/* ── Menubar / Toolbar / Headerbar ── */
+menubar, toolbar, headerbar {
+  background-color: #010110;
+  color: #C8D1E9;
+  border-bottom: 1px solid rgba(200, 209, 233, 0.12);
+}
+menuitem {
+  color: #C8D1E9;
+  padding: 5px 14px;
+}
+menuitem:hover,
+menubar > menuitem:hover {
+  background-color: rgba(200, 209, 233, 0.08);
+  color: #C8D1E9;
+}
+
+/* ── Boutons ── */
+button {
+  background: rgba(200, 209, 233, 0.05);
+  color: #C8D1E9;
+  border: 1px solid rgba(200, 209, 233, 0.18);
+  border-radius: 6px;
+  padding: 5px 14px;
+}
+button:hover   { background: rgba(200, 209, 233, 0.11); }
+button:active,
+button:checked { background: rgba(200, 209, 233, 0.17); }
+button:disabled { opacity: 0.35; }
+
+button.suggested-action {
+  background: rgba(200, 209, 233, 0.16);
+  border-color: rgba(200, 209, 233, 0.38);
+}
+button.suggested-action:hover { background: rgba(200, 209, 233, 0.24); }
+
+/* ── Listes / ListBox ── */
+listbox { background-color: #01010F; color: #C8D1E9; }
+listbox row, row {
+  background-color: transparent;
+  color: #C8D1E9;
+  border-bottom: 1px solid rgba(200, 209, 233, 0.05);
+}
+listbox row:hover, row:hover { background-color: rgba(200, 209, 233, 0.06); }
+listbox row:selected, row:selected {
+  background-color: rgba(200, 209, 233, 0.13);
+  color: #C8D1E9;
+}
+
+/* ── Séparateurs ── */
+separator { background-color: rgba(200, 209, 233, 0.12); }
+
+/* ── Champs de saisie ── */
+entry {
+  background-color: rgba(200, 209, 233, 0.05);
+  color: #C8D1E9;
+  border: 1px solid rgba(200, 209, 233, 0.18);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+entry:focus { border-color: rgba(200, 209, 233, 0.45); }
+
+/* ── Combobox ── */
+combobox button,
+combobox button:hover { border-radius: 6px; }
+
+/* ── Scrollbars ── */
+scrollbar trough { background: transparent; }
+scrollbar slider {
+  background-color: rgba(200, 209, 233, 0.22);
+  border-radius: 2px;
+  min-width: 4px;
+  min-height: 4px;
+}
+scrollbar slider:hover { background-color: rgba(200, 209, 233, 0.38); }
+
+/* ── Labels ── */
+label { color: #C8D1E9; }
+label.dim-label { color: rgba(200, 209, 233, 0.5); }
+
+/* ── Notebooks ── */
+notebook, notebook > stack { background-color: #01010F; color: #C8D1E9; }
+notebook > header {
+  background-color: #010110;
+  border-bottom: 1px solid rgba(200, 209, 233, 0.12);
+}
+notebook > header tab { color: rgba(200, 209, 233, 0.55); padding: 6px 14px; }
+notebook > header tab:checked {
+  color: #C8D1E9;
+  border-bottom: 2px solid rgba(200, 209, 233, 0.6);
+}
+
+/* ── Treeview ── */
+treeview, treeview.view { background-color: #01010F; color: #C8D1E9; }
+treeview:selected, treeview.view:selected {
+  background-color: rgba(200, 209, 233, 0.13);
+  color: #C8D1E9;
+}
+treeview:hover { background-color: rgba(200, 209, 233, 0.06); }
+
+/* ── Checkboxes ── */
+checkbutton, radiobutton { color: #C8D1E9; background: transparent; }
+check {
+  background-color: rgba(200, 209, 233, 0.06);
+  border: 1px solid rgba(200, 209, 233, 0.28);
+  border-radius: 3px;
+  min-width: 16px;
+  min-height: 16px;
+}
+check:checked {
+  background-color: rgba(200, 209, 233, 0.25);
+  border-color: rgba(200, 209, 233, 0.55);
+  color: #C8D1E9;
+}
+radio {
+  background-color: rgba(200, 209, 233, 0.06);
+  border: 1px solid rgba(200, 209, 233, 0.28);
+  border-radius: 50%;
+  min-width: 16px;
+  min-height: 16px;
+}
+radiobutton radio:checked {
+  background-color: rgba(200, 209, 233, 0.22);
+  border-color: rgba(200, 209, 233, 0.55);
+  color: rgba(200, 209, 233, 0.8);
+}
+
+/* ── Sliders (scale) ── */
+scale trough {
+  background-color: rgba(200, 209, 233, 0.1);
+  border-radius: 3px;
+  min-height: 4px;
+}
+scale trough highlight,
+scale.horizontal trough highlight,
+scale.vertical trough highlight {
+  background-color: rgba(200, 209, 233, 0.45);
+  border-radius: 3px;
+}
+scale slider {
+  background-color: #C8D1E9;
+  border-radius: 50%;
+  min-width: 14px;
+  min-height: 14px;
+  border: none;
+}
+
+/* ── Progressbar ── */
+progressbar trough {
+  background-color: rgba(200, 209, 233, 0.1);
+  border-radius: 3px;
+  min-height: 4px;
+}
+progressbar progress {
+  background-color: rgba(200, 209, 233, 0.45);
+  border-radius: 3px;
+}
+
+/* ── Spinbuttons ── */
+spinbutton {
+  background-color: rgba(200, 209, 233, 0.05);
+  color: #C8D1E9;
+  border: 1px solid rgba(200, 209, 233, 0.18);
+  border-radius: 6px;
+}
+
+/* ── Frames ── */
+frame > border, .frame { border-color: rgba(200, 209, 233, 0.12); }
+
+/* ── Popovers / Tooltips ── */
+popover, tooltip {
+  background-color: #01011A;
+  color: #C8D1E9;
+  border: 1px solid rgba(200, 209, 233, 0.18);
+  border-radius: 6px;
+}
+
+/* ── Stackswitcher ── */
+stackswitcher button { border-radius: 4px; }
+
+/* ── Thunar ── */
+.pathbar button {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: #C8D1E9;
+  padding: 3px 8px;
+}
+.pathbar button:hover   { background: rgba(200, 209, 233, 0.08); }
+.pathbar button:checked { background: rgba(200, 209, 233, 0.13); }
+
+.sidebar {
+  background-color: #010110;
+  border-right: 1px solid rgba(200, 209, 233, 0.08);
+}
+.sidebar row {
+  color: rgba(200, 209, 233, 0.65);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+.sidebar row:hover    { background: rgba(200, 209, 233, 0.06); color: #C8D1E9; }
+.sidebar row:selected { background: rgba(200, 209, 233, 0.13); color: #C8D1E9; }
+
+.thunar-window entry { background: rgba(200, 209, 233, 0.07); }
