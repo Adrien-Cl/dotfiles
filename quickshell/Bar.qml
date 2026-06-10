@@ -1,5 +1,6 @@
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Io
 import Quickshell.Services.Notifications
 import QtQuick
 import QtQuick.Layouts
@@ -31,6 +32,19 @@ PanelWindow {
     property bool phoneVisible:    false
     property bool mediaVisible:    false
     property bool settingsVisible: false
+
+    IpcHandler {
+        target: "bar"
+
+        function toggleSettings(): void {
+            barWindow.settingsVisible = !barWindow.settingsVisible
+            barWindow.notifVisible    = false
+            barWindow.controlVisible  = false
+            barWindow.powerVisible    = false
+            barWindow.btPanelVisible  = false
+            barWindow.phoneVisible    = false
+        }
+    }
 
     Timer {
         id: mediaHideTimer

@@ -6,6 +6,7 @@ Singleton {
     readonly property color bg:          "#01010F"
     readonly property color bgOpaque:    Qt.rgba(0x01/255, 0x01/255, 0x0F/255, 0.9)
     readonly property color bgSolid:     Qt.rgba(0x01/255, 0x01/255, 0x0F/255, 1.0)
+    readonly property color bgBlur:      Qt.rgba(0x01/255, 0x01/255, 0x0F/255, 0.75)
     readonly property color text:        "#C8D1E9"
     readonly property color textDim:     Qt.rgba(0xC8/255, 0xD1/255, 0xE9/255, 0.5)
     readonly property color aiIcon:      "#DDAC26"

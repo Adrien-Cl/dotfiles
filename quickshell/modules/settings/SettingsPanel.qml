@@ -1,17 +1,28 @@
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 import "../../"
 
-PopupWindow {
+PanelWindow {
     id: root
 
     required property PanelWindow bar
     signal closeRequested()
 
-    anchor.window: bar
+    screen: bar.screen
+
+    color:        "transparent"
+    exclusiveZone: 0
+    WlrLayershell.namespace:    "quickshell"
+    WlrLayershell.layer:        WlrLayershell.Overlay
+    WlrLayershell.keyboardFocus: WlrLayershell.None
+
+    anchors { top: true; left: true }
+    margins.top:  Theme.marginTop * 2 + Theme.barHeight + 8
+    margins.left: Theme.marginSide + Math.max(0, Math.round((bar.width - 880) / 2))
+
     visible: false
-    color: "transparent"
 
     property bool shown: false
     property int currentPage: 0
@@ -42,16 +53,13 @@ PopupWindow {
         onFinished: root.visible = false
     }
 
-    implicitWidth: 880
+    implicitWidth:  880
     implicitHeight: 580
-
-    anchor.rect.x: Math.max(0, (bar.width - 880) / 2)
-    anchor.rect.y: Theme.barHeight + Theme.marginTop + 8
 
     Rectangle {
         id: contentRect
         anchors.fill: parent
-        color: Theme.bgSolid
+        color: Theme.bgBlur
         radius: 8
         opacity: 0
         clip: true
