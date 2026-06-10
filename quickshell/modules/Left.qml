@@ -10,6 +10,7 @@ RowLayout {
     signal aiChatRequested()
     signal mediaHoverStarted()
     signal mediaHoverStopped()
+    signal settingsRequested()
 
     // AI star icon
     Text {
@@ -43,6 +44,11 @@ RowLayout {
         font.family:    Theme.fontFamily
         font.pixelSize: Theme.iconSize
         Layout.alignment: Qt.AlignVCenter
+        MouseArea {
+            anchors.fill: parent
+            cursorShape:  Qt.PointingHandCursor
+            onClicked:    root.settingsRequested()
+        }
     }
 
     // Separator (hidden when no media player)

@@ -141,7 +141,7 @@ RowLayout {
 
     // File manager icon
     Text {
-        text:           "󰉋"
+        text:           ""
         color:          Theme.text
         font.family:    Theme.fontFamily
         font.pixelSize: Theme.iconSize

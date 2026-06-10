@@ -67,8 +67,9 @@ PopupWindow {
     Process {
         id: procCleanDevices
         command: ["bash", "-c",
+            "paired=$(bluetoothctl devices Paired | awk '{print $2}'); " +
             "bluetoothctl devices | awk '{print $2}' | while read a; do " +
-            "bluetoothctl info \"$a\" | grep -q 'Paired: yes' || bluetoothctl remove \"$a\"; " +
+            "echo \"$paired\" | grep -qx \"$a\" || bluetoothctl remove \"$a\"; " +
             "done"]
         running: false
         onRunningChanged: {
@@ -78,6 +79,13 @@ PopupWindow {
                     Bluetooth.defaultAdapter.discovering = true
             }
         }
+    }
+
+    Process {
+        id: procTrust
+        property string mac: ""
+        command: ["bluetoothctl", "trust", mac]
+        running: false
     }
 
     Rectangle {
@@ -248,6 +256,66 @@ PopupWindow {
                     }
 
                     Repeater {
+                        model: Bluetooth.defaultAdapter ? Bluetooth.defaultAdapter.devices : []
+                        delegate: Rectangle {
+                            required property var modelData
+                            visible: modelData.connected
+                            width:  visible ? parent.width : 0
+                            height: visible ? 38 : 0
+                            radius: 6
+                            color:  Qt.rgba(1, 1, 1, 0.04)
+                            RowLayout {
+                                anchors { fill: parent; leftMargin: 10; rightMargin: 10 }
+                                spacing: 8
+                                Text {
+                                    text: root.deviceIcon(modelData.icon ?? "")
+                                    color: "#4CAF50"
+                                    font.family: Theme.fontFamily
+                                    font.pixelSize: Theme.iconSize
+                                }
+                                Column {
+                                    Layout.fillWidth: true
+                                    spacing: 1
+                                    Text {
+                                        text: modelData.deviceName || modelData.name
+                                        color: Theme.text
+                                        font.family: Theme.fontFamily
+                                        font.pixelSize: Theme.fontSize
+                                        font.weight: Theme.fontWeight
+                                        elide: Text.ElideRight
+                                        width: parent.width
+                                    }
+                                    Text {
+                                        text: "• Connecté"
+                                        color: "#4CAF50"
+                                        font.family: Theme.fontFamily
+                                        font.pixelSize: 9
+                                    }
+                                }
+                                Rectangle {
+                                    width: disconnectLbl.implicitWidth + 14
+                                    height: 22; radius: 4
+                                    color: Qt.rgba(1, 0.3, 0.3, 0.15)
+                                    Text {
+                                        id: disconnectLbl
+                                        anchors.centerIn: parent
+                                        text: "✕"
+                                        color: Theme.danger
+                                        font.family: Theme.fontFamily
+                                        font.pixelSize: 10
+                                        font.weight: Theme.fontWeight
+                                    }
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        cursorShape: Qt.PointingHandCursor
+                                        onClicked: modelData.disconnect()
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Repeater {
                         id:    deviceRepeater
                         model: Bluetooth.defaultAdapter ? Bluetooth.defaultAdapter.devices : []
 
@@ -255,12 +323,11 @@ PopupWindow {
                             required property var modelData
 
                             visible: {
-                                if (modelData.paired || modelData.connected) return true
+                                if (modelData.connected) return false
+                                if (modelData.paired) return true
                                 var n = modelData.deviceName || modelData.name || ""
                                 if (n === "") return false
-                                // adresse MAC complète : AA:BB:CC:DD:EE:FF
                                 if (/^([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2}$/.test(n)) return false
-                                // nom se terminant par un fragment MAC : "BRC1H E6:29:E5"
                                 if (/([0-9A-Fa-f]{2}[:-]){2}[0-9A-Fa-f]{2}$/.test(n)) return false
                                 return true
                             }
@@ -329,10 +396,13 @@ PopupWindow {
                                         anchors.fill: parent
                                         cursorShape:  Qt.PointingHandCursor
                                         onClicked: {
-                                            if (modelData.connected)
+                                            if (modelData.connected) {
                                                 modelData.disconnect()
-                                            else
+                                            } else {
                                                 modelData.connect()
+                                                procTrust.mac = modelData.address
+                                                procTrust.running = true
+                                            }
                                         }
                                     }
                                 }

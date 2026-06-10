@@ -5,6 +5,7 @@ import QtQuick
 import QtQuick.Layouts
 import "."
 import "modules/"
+import "modules/settings/"
 
 PanelWindow {
     id: barWindow
@@ -23,12 +24,13 @@ PanelWindow {
     WlrLayershell.layer: WlrLayershell.Top
     WlrLayershell.keyboardFocus: WlrLayershell.None
 
-    property bool notifVisible:   false
-    property bool controlVisible: false
-    property bool powerVisible:   false
-    property bool btPanelVisible: false
-    property bool phoneVisible:   false
-    property bool mediaVisible:   false
+    property bool notifVisible:    false
+    property bool controlVisible:  false
+    property bool powerVisible:    false
+    property bool btPanelVisible:  false
+    property bool phoneVisible:    false
+    property bool mediaVisible:    false
+    property bool settingsVisible: false
 
     Timer {
         id: mediaHideTimer
@@ -56,6 +58,14 @@ PanelWindow {
                 }
                 onMediaHoverStopped: {
                     mediaHideTimer.restart()
+                }
+                onSettingsRequested: {
+                    barWindow.settingsVisible  = !barWindow.settingsVisible
+                    barWindow.notifVisible     = false
+                    barWindow.controlVisible   = false
+                    barWindow.powerVisible     = false
+                    barWindow.btPanelVisible   = false
+                    barWindow.phoneVisible     = false
                 }
             }
         }
@@ -85,25 +95,29 @@ PanelWindow {
                 anchors.centerIn: parent
                 notifCount: barWindow.notificationServer.trackedNotifications.values.length
                 onNotifClicked: {
-                    barWindow.notifVisible   = !barWindow.notifVisible
-                    barWindow.controlVisible = false
-                    barWindow.powerVisible   = false
+                    barWindow.notifVisible    = !barWindow.notifVisible
+                    barWindow.controlVisible  = false
+                    barWindow.powerVisible    = false
+                    barWindow.settingsVisible = false
                 }
                 onControlClicked: {
-                    barWindow.controlVisible = !barWindow.controlVisible
-                    barWindow.notifVisible   = false
-                    barWindow.powerVisible   = false
+                    barWindow.controlVisible  = !barWindow.controlVisible
+                    barWindow.notifVisible    = false
+                    barWindow.powerVisible    = false
+                    barWindow.settingsVisible = false
                 }
                 onPowerClicked: {
-                    barWindow.powerVisible   = !barWindow.powerVisible
-                    barWindow.notifVisible   = false
-                    barWindow.controlVisible = false
+                    barWindow.powerVisible    = !barWindow.powerVisible
+                    barWindow.notifVisible    = false
+                    barWindow.controlVisible  = false
+                    barWindow.settingsVisible = false
                 }
                 onPhoneClicked: {
-                    barWindow.phoneVisible   = !barWindow.phoneVisible
-                    barWindow.notifVisible   = false
-                    barWindow.controlVisible = false
-                    barWindow.powerVisible   = false
+                    barWindow.phoneVisible    = !barWindow.phoneVisible
+                    barWindow.notifVisible    = false
+                    barWindow.controlVisible  = false
+                    barWindow.powerVisible    = false
+                    barWindow.settingsVisible = false
                 }
                 onFileManagerClicked: Quickshell.execDetached(["thunar"])
             }
@@ -114,7 +128,7 @@ PanelWindow {
     PanelWindow {
         id: backdrop
         screen: barWindow.screen
-        visible: barWindow.notifVisible || barWindow.controlVisible || barWindow.powerVisible || barWindow.btPanelVisible || barWindow.phoneVisible
+        visible: barWindow.notifVisible || barWindow.controlVisible || barWindow.powerVisible || barWindow.btPanelVisible || barWindow.phoneVisible || barWindow.settingsVisible
 
         anchors { top: true; bottom: true; left: true; right: true }
 
@@ -126,11 +140,12 @@ PanelWindow {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                barWindow.notifVisible   = false
-                barWindow.controlVisible = false
-                barWindow.powerVisible   = false
-                barWindow.btPanelVisible = false
-                barWindow.phoneVisible   = false
+                barWindow.notifVisible    = false
+                barWindow.controlVisible  = false
+                barWindow.powerVisible    = false
+                barWindow.btPanelVisible  = false
+                barWindow.phoneVisible    = false
+                barWindow.settingsVisible = false
             }
         }
     }
@@ -182,6 +197,12 @@ PanelWindow {
         shown: barWindow.powerVisible
         bar:   barWindow
         onCloseRequested: barWindow.powerVisible = false
+    }
+
+    SettingsPanel {
+        shown: barWindow.settingsVisible
+        bar:   barWindow
+        onCloseRequested: barWindow.settingsVisible = false
     }
 
     OSD {
