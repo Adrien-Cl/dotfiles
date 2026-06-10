@@ -19,6 +19,8 @@ onlyoffice/
 dconf/
 pulse/
 VSCodium/
+Bitwarden/
+jellyfin-desktop/
 
 # ── Développement ──────────────────────────────────────
 composer/

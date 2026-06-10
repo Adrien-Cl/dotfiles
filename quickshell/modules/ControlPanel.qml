@@ -650,7 +650,7 @@ PopupWindow {
                         }
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
-                            text:           "DISQUE"
+                            text:           "DISK"
                             color:          Qt.rgba(0xC8/255, 0xD1/255, 0xE9/255, 0.3)
                             font.family:    Theme.fontFamily
                             font.pixelSize: 9
