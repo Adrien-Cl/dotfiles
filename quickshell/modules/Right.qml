@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 import "../"
@@ -7,7 +8,10 @@ RowLayout {
     id: root
     spacing: Theme.spacing
 
-    property int notifCount: 0
+    property int  notifCount:      0
+    property int  batteryLevel:    0
+    property bool batteryCharging: false
+    property bool hasBattery:      false
 
     signal notifClicked()
     signal controlClicked()
@@ -16,20 +20,44 @@ RowLayout {
     signal fileManagerClicked()
 
     function batteryIcon(level, chg) {
-        if (chg) return "󰂈"
-        if (level < 10)  return "󰁺"
-        if (level < 20)  return "󰁻"
-        if (level < 30)  return "󰁼"
-        if (level < 50)  return "󰁾"
-        if (level < 70)  return "󰁿"
-        if (level < 90)  return "󰂁"
-        return "󰁹"
+        if (chg) return ""
+        if (level < 10)  return ""
+        if (level < 30)  return ""
+        if (level < 60)  return ""
+        if (level < 80)  return ""
+        return ""
     }
 
     function batteryColor(level) {
         if (level <= 15) return Theme.danger
         if (level <= 30) return "#FFA500"
         return "#4CAF50"
+    }
+
+    Process {
+        id: procBattery
+        command: ["bash", "-c",
+            "for b in /sys/class/power_supply/BAT*; do " +
+            "  [ -f \"$b/capacity\" ] && echo \"has:$(cat $b/capacity):$(cat $b/status)\" && break; " +
+            "done"]
+        running: true
+        stdout: SplitParser {
+            splitMarker: "\n"
+            onRead: data => {
+                if (!data.startsWith("has:")) { root.hasBattery = false; return }
+                root.hasBattery = true
+                var parts = data.split(":")
+                root.batteryLevel    = parseInt(parts[1])
+                root.batteryCharging = parts[2].trim() === "Charging"
+            }
+        }
+    }
+
+    Timer {
+        interval:    60000
+        running:     true
+        repeat:      true
+        onTriggered: procBattery.running = true
     }
 
     // Clock + Date
@@ -67,6 +95,41 @@ RowLayout {
 
     // Separator
     Text {
+        visible:        root.hasBattery || KdeConnectState.connected
+        text:           "|"
+        color:          Theme.text
+        font.family:    Theme.fontFamily
+        font.pixelSize: Theme.fontSize
+        font.weight:    Font.DemiBold
+        Layout.alignment: Qt.AlignVCenter
+    }
+
+    // Battery indicator
+    RowLayout {
+        visible:          root.hasBattery
+        spacing:          4
+        Layout.alignment: Qt.AlignVCenter
+
+        Text {
+            text:             root.batteryIcon(root.batteryLevel, root.batteryCharging)
+            color:            root.batteryColor(root.batteryLevel)
+            font.family:      Theme.fontFamily
+            font.pixelSize:   Theme.iconSize
+            Layout.alignment: Qt.AlignVCenter
+        }
+        Text {
+            text:             root.batteryLevel + "%"
+            color:            root.batteryColor(root.batteryLevel)
+            font.family:      Theme.fontFamily
+            font.pixelSize:   Theme.fontSize
+            font.weight:      Theme.fontWeight
+            Layout.alignment: Qt.AlignVCenter
+        }
+    }
+
+    // Separator between battery and KDE Connect
+    Text {
+        visible:        root.hasBattery && KdeConnectState.connected
         text:           "|"
         color:          Theme.text
         font.family:    Theme.fontFamily
