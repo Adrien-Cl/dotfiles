@@ -19,6 +19,6 @@ Singleton {
     readonly property int iconSize:      16
     readonly property int spacing:       12
 
-    readonly property string fontFamily: "JetBrains Nerd Font"
+    readonly property string fontFamily: "JetBrainsMono Nerd Font"
     readonly property int fontWeight:    Font.DemiBold
 }
