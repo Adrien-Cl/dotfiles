@@ -12,7 +12,8 @@ ShellRoot {
 
         onNotification: notification => {
             notification.tracked = true
-            if (notification.appName !== "notify-send")
+            notification.closed.connect(function() { NotificationState.removeById(notification.id) })
+            if (!NotificationState.dnd && notification.appName !== "notify-send")
                 NotificationState.add(notification)
         }
     }

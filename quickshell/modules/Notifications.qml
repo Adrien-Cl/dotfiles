@@ -48,7 +48,7 @@ PopupWindow {
     implicitWidth:  340
     implicitHeight: {
         var count = root.server.trackedNotifications.values.length
-        if (count === 0) return panelHeader.implicitHeight + 14 + 70
+        if (count === 0) return panelHeader.implicitHeight + 14 + (NotificationState.dnd ? 110 : 90)
         return Math.min(panelHeader.implicitHeight + 18 + notifList.contentHeight + 28, 520)
     }
 
@@ -138,6 +138,26 @@ PopupWindow {
 
                 Item { Layout.fillWidth: true }
 
+                // Bouton DND
+                Text {
+                    id:    dndBtn
+                    text:  NotificationState.dnd ? "󱙜" : "󱙝"
+                    color: NotificationState.dnd ? "#A78BFA" : Theme.textDim
+                    font { family: Theme.fontFamily; pixelSize: Theme.fontSize + 1 }
+                    Layout.alignment: Qt.AlignVCenter
+
+                    Behavior on color { ColorAnimation { duration: 150 } }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        cursorShape:  Qt.PointingHandCursor
+                        hoverEnabled: true
+                        onEntered:    if (!NotificationState.dnd) dndBtn.color = Theme.text
+                        onExited:     dndBtn.color = NotificationState.dnd ? "#A78BFA" : Theme.textDim
+                        onClicked:    NotificationState.dnd = !NotificationState.dnd
+                    }
+                }
+
                 Text {
                     id:      clearAllBtn
                     visible: root.server.trackedNotifications.values.length > 0
@@ -177,11 +197,31 @@ PopupWindow {
             }
             visible: root.server.trackedNotifications.values.length === 0
 
-            Text {
+            Column {
                 anchors.centerIn: parent
-                text:  "Aucune notification"
-                color: Theme.textDim
-                font { family: Theme.fontFamily; pixelSize: Theme.fontSize }
+                spacing: 6
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text:  NotificationState.dnd ? "󱙝" : "\u{F1942}"
+                    color: NotificationState.dnd ? "#A78BFA" : Theme.textDim
+                    font { family: Theme.fontFamily; pixelSize: 28 }
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text:  "Aucune notification"
+                    color: Theme.textDim
+                    font { family: Theme.fontFamily; pixelSize: Theme.fontSize }
+                }
+
+                Text {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: NotificationState.dnd
+                    text:    "Mode silencieux actif"
+                    color:   Qt.rgba(0xA7/255, 0x8B/255, 0xFA/255, 0.7)
+                    font { family: Theme.fontFamily; pixelSize: Theme.fontSize - 2 }
+                }
             }
         }
 
@@ -346,14 +386,27 @@ PopupWindow {
                                 Layout.fillWidth: true
                                 spacing: 2
 
-                                Text {
-                                    id: notifAppNameText
-                                    visible: (notifCard.modelData.appName || "").length > 0
+                                RowLayout {
                                     width:   parent.width
-                                    text:    notifCard.modelData.appName || ""
-                                    color:   Theme.textDim
-                                    font { family: Theme.fontFamily; pixelSize: Theme.fontSize - 2; weight: Font.Medium }
-                                    elide:   Text.ElideRight
+                                    spacing: 4
+                                    visible: (notifCard.modelData.appName || "").length > 0
+
+                                    Text {
+                                        id: notifAppNameText
+                                        Layout.fillWidth: true
+                                        text:  notifCard.modelData.appName || ""
+                                        color: Theme.textDim
+                                        font { family: Theme.fontFamily; pixelSize: Theme.fontSize - 2; weight: Font.Medium }
+                                        elide: Text.ElideRight
+                                    }
+
+                                    Text {
+                                        text:  NotificationState.getRelativeTime(notifCard.modelData.id)
+                                        color: Theme.textDim
+                                        font { family: Theme.fontFamily; pixelSize: Theme.fontSize - 3 }
+                                        Layout.alignment: Qt.AlignVCenter
+                                        opacity: 0.7
+                                    }
                                 }
 
                                 Text {

@@ -5,8 +5,23 @@ import QtQuick
 Singleton {
     id: root
     property ListModel toasts: ListModel {}
+    property bool dnd: false
+    property int  _tick: 0
+    property var  _timestamps: ({})
+
+    Timer {
+        interval: 30000
+        repeat:   true
+        running:  true
+        onTriggered: root._tick++
+    }
 
     function add(notif) {
+        if (toasts.count >= 4) toasts.remove(0)
+        var ts = new Date().getTime()
+        var map = root._timestamps
+        map[notif.id] = ts
+        root._timestamps = map
         toasts.append({
             "notifId":       notif.id,
             "notifAppName":  notif.appName   || "",
@@ -16,7 +31,7 @@ Singleton {
             "notifBody":     notif.body      || "",
             "notifUrgency":  notif.urgency * 1 || 1,
             "notifObject":   notif,
-            "notifTime":     new Date().getTime(),
+            "notifTime":     ts,
             "notifCategory": _categorize(notif)
         })
     }
@@ -25,9 +40,18 @@ Singleton {
         for (var i = 0; i < toasts.count; i++) {
             if (toasts.get(i).notifId === notifId) {
                 toasts.remove(i)
-                return
+                break
             }
         }
+        var map = root._timestamps
+        delete map[notifId]
+        root._timestamps = map
+    }
+
+    function getRelativeTime(id) {
+        var dummy = root._tick
+        var ts = root._timestamps[id] || 0
+        return relativeTime(ts)
     }
 
     function _categorize(notif) {
@@ -39,6 +63,7 @@ Singleton {
     }
 
     function relativeTime(ts) {
+        if (!ts) return ""
         var d = (new Date().getTime() - ts) / 1000
         if (d < 60)    return "maintenant"
         if (d < 3600)  return Math.floor(d / 60) + " min"

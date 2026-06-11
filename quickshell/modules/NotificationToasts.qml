@@ -112,7 +112,7 @@ PanelWindow {
             Rectangle {
                 id:     card
                 width:  parent.width
-                height: cardContent.implicitHeight + 24
+                height: cardContent.implicitHeight + 28
                 radius: 8
                 color:  hoverArea.containsMouse
                         ? Qt.rgba(0xD0/255, 0xD9/255, 0xF0/255, 0.12)
@@ -357,6 +357,38 @@ PanelWindow {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+
+                // ── Barre de progression du timer ─────────────────────────
+                Rectangle {
+                    id: timerBar
+                    anchors {
+                        bottom:       parent.bottom
+                        left:         parent.left
+                        leftMargin:   5
+                        bottomMargin: 3
+                    }
+                    height: 2
+                    radius: 1
+                    color:  Qt.rgba(toastItem.accentColor.r, toastItem.accentColor.g,
+                                    toastItem.accentColor.b, 0.5)
+                    z: 4
+
+                    NumberAnimation on width {
+                        id:       timerBarAnim
+                        from:     card.width - 10
+                        to:       0
+                        duration: 5000
+                        running:  true
+                    }
+
+                    // Sync avec le timer : le timer repart de 0 au survol, la barre aussi
+                    Connections {
+                        target: hoverArea
+                        function onContainsMouseChanged() {
+                            if (!hoverArea.containsMouse) timerBarAnim.restart()
                         }
                     }
                 }

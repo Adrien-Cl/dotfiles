@@ -171,10 +171,12 @@ RowLayout {
 
         Text {
             id:             bellIcon
-            text:           "\u{F1942}"
-            color:          Theme.text
+            text:           NotificationState.dnd ? "󱙝" : "\u{F1942}"
+            color:          NotificationState.dnd ? Theme.danger : Theme.text
             font.family:    Theme.fontFamily
             font.pixelSize: Theme.iconSize
+
+            Behavior on color { ColorAnimation { duration: 150 } }
         }
 
         Rectangle {
