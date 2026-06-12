@@ -34,17 +34,19 @@ PanelWindow {
     property bool settingsVisible: false
     property bool batteryVisible:  false
 
+    function closeAll() {
+        notifVisible = false; controlVisible = false; powerVisible = false
+        btPanelVisible = false; phoneVisible = false; settingsVisible = false
+        batteryVisible = false
+    }
+
     IpcHandler {
         target: "bar"
 
         function toggleSettings(): void {
-            barWindow.settingsVisible = !barWindow.settingsVisible
-            barWindow.notifVisible    = false
-            barWindow.controlVisible  = false
-            barWindow.powerVisible    = false
-            barWindow.btPanelVisible  = false
-            barWindow.phoneVisible    = false
-            barWindow.batteryVisible  = false
+            var opening = !barWindow.settingsVisible
+            barWindow.closeAll()
+            barWindow.settingsVisible = opening
         }
     }
 
@@ -76,12 +78,9 @@ PanelWindow {
                     mediaHideTimer.restart()
                 }
                 onSettingsRequested: {
-                    barWindow.settingsVisible  = !barWindow.settingsVisible
-                    barWindow.notifVisible     = false
-                    barWindow.controlVisible   = false
-                    barWindow.powerVisible     = false
-                    barWindow.btPanelVisible   = false
-                    barWindow.phoneVisible     = false
+                    var opening = !barWindow.settingsVisible
+                    barWindow.closeAll()
+                    barWindow.settingsVisible = opening
                 }
             }
         }
@@ -111,41 +110,29 @@ PanelWindow {
                 anchors.centerIn: parent
                 notifCount: barWindow.notificationServer.trackedNotifications.values.length
                 onNotifClicked: {
-                    barWindow.notifVisible    = !barWindow.notifVisible
-                    barWindow.controlVisible  = false
-                    barWindow.powerVisible    = false
-                    barWindow.batteryVisible  = false
-                    barWindow.settingsVisible = false
+                    var opening = !barWindow.notifVisible
+                    barWindow.closeAll()
+                    barWindow.notifVisible = opening
                 }
                 onControlClicked: {
-                    barWindow.controlVisible  = !barWindow.controlVisible
-                    barWindow.notifVisible    = false
-                    barWindow.powerVisible    = false
-                    barWindow.batteryVisible  = false
-                    barWindow.settingsVisible = false
+                    var opening = !barWindow.controlVisible
+                    barWindow.closeAll()
+                    barWindow.controlVisible = opening
                 }
                 onPowerClicked: {
-                    barWindow.powerVisible    = !barWindow.powerVisible
-                    barWindow.notifVisible    = false
-                    barWindow.controlVisible  = false
-                    barWindow.batteryVisible  = false
-                    barWindow.settingsVisible = false
+                    var opening = !barWindow.powerVisible
+                    barWindow.closeAll()
+                    barWindow.powerVisible = opening
                 }
                 onPhoneClicked: {
-                    barWindow.phoneVisible    = !barWindow.phoneVisible
-                    barWindow.notifVisible    = false
-                    barWindow.controlVisible  = false
-                    barWindow.powerVisible    = false
-                    barWindow.batteryVisible  = false
-                    barWindow.settingsVisible = false
+                    var opening = !barWindow.phoneVisible
+                    barWindow.closeAll()
+                    barWindow.phoneVisible = opening
                 }
                 onBatteryClicked: {
-                    barWindow.batteryVisible  = !barWindow.batteryVisible
-                    barWindow.notifVisible    = false
-                    barWindow.controlVisible  = false
-                    barWindow.powerVisible    = false
-                    barWindow.phoneVisible    = false
-                    barWindow.settingsVisible = false
+                    var opening = !barWindow.batteryVisible
+                    barWindow.closeAll()
+                    barWindow.batteryVisible = opening
                 }
                 onFileManagerClicked: Quickshell.execDetached(["thunar"])
             }
@@ -167,15 +154,7 @@ PanelWindow {
 
         MouseArea {
             anchors.fill: parent
-            onClicked: {
-                barWindow.notifVisible    = false
-                barWindow.controlVisible  = false
-                barWindow.powerVisible    = false
-                barWindow.btPanelVisible  = false
-                barWindow.phoneVisible    = false
-                barWindow.settingsVisible = false
-                barWindow.batteryVisible  = false
-            }
+            onClicked: barWindow.closeAll()
         }
     }
 

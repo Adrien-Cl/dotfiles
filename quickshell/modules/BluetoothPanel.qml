@@ -146,7 +146,7 @@ PopupWindow {
                     width:  36
                     height: 18
                     radius: 9
-                    color:  Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled ? "#4CAF50" : Theme.textDim
+                    color:  Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled ? Theme.success : Theme.textDim
 
                     Rectangle {
                         width:  14
@@ -269,7 +269,7 @@ PopupWindow {
                                 spacing: 8
                                 Text {
                                     text: root.deviceIcon(modelData.icon ?? "")
-                                    color: "#4CAF50"
+                                    color: Theme.success
                                     font.family: Theme.fontFamily
                                     font.pixelSize: Theme.iconSize
                                 }
@@ -287,7 +287,7 @@ PopupWindow {
                                     }
                                     Text {
                                         text: "• Connecté"
-                                        color: "#4CAF50"
+                                        color: Theme.success
                                         font.family: Theme.fontFamily
                                         font.pixelSize: 9
                                     }
@@ -346,7 +346,7 @@ PopupWindow {
 
                                 Text {
                                     text:           root.deviceIcon(modelData.icon ?? "")
-                                    color:          modelData.connected ? "#4CAF50" : Theme.textDim
+                                    color:          modelData.connected ? Theme.success : Theme.textDim
                                     font.family:    Theme.fontFamily
                                     font.pixelSize: Theme.iconSize
                                 }
@@ -368,7 +368,7 @@ PopupWindow {
                                     Text {
                                         visible:        modelData.connected
                                         text:           "• Connecté"
-                                        color:          "#4CAF50"
+                                        color:          Theme.success
                                         font.family:    Theme.fontFamily
                                         font.pixelSize: 9
                                     }
@@ -386,7 +386,7 @@ PopupWindow {
                                         id:             actionLbl
                                         anchors.centerIn: parent
                                         text:           modelData.connected ? "✕" : "Connecter"
-                                        color:          modelData.connected ? Theme.danger : "#4CAF50"
+                                        color:          modelData.connected ? Theme.danger : Theme.success
                                         font.family:    Theme.fontFamily
                                         font.pixelSize: 10
                                         font.weight:    Theme.fontWeight

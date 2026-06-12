@@ -88,8 +88,8 @@ Item {
 
     function batteryColor(level) {
         if (level <= 15) return Theme.danger
-        if (level <= 30) return "#FFA500"
-        return "#4CAF50"
+        if (level <= 30) return Theme.warning
+        return Theme.success
     }
 
     Column {

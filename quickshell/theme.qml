@@ -14,6 +14,8 @@ Singleton {
     property color textDim:     Qt.rgba(text.r, text.g, text.b, 0.5)
     property color aiIcon:      "#DDAC26"
     property color danger:      "#F96565"
+    property color success:     "#4CAF50"
+    property color warning:     "#FFA500"
     property color separator:   Qt.rgba(text.r, text.g, text.b, 0.25)
 
     readonly property int barHeight:     32

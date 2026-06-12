@@ -76,7 +76,7 @@ Item {
             }
             Rectangle {
                 width: 36; height: 18; radius: 9
-                color: Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled ? "#4CAF50" : Theme.textDim
+                color: Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled ? Theme.success : Theme.textDim
                 Rectangle {
                     width: 14; height: 14; radius: 7
                     color: "white"
@@ -186,7 +186,7 @@ Item {
                                 spacing: 10
                                 Text {
                                     text: root.deviceIcon(modelData.icon ?? "")
-                                    color: "#4CAF50"
+                                    color: Theme.success
                                     font.family: Theme.fontFamily
                                     font.pixelSize: Theme.iconSize + 2
                                 }
@@ -204,7 +204,7 @@ Item {
                                     }
                                     Text {
                                         text: "• Connecté"
-                                        color: "#4CAF50"
+                                        color: Theme.success
                                         font.family: Theme.fontFamily
                                         font.pixelSize: 9
                                     }
@@ -259,7 +259,7 @@ Item {
 
                                 Text {
                                     text: root.deviceIcon(modelData.icon ?? "")
-                                    color: modelData.connected ? "#4CAF50" : Theme.textDim
+                                    color: modelData.connected ? Theme.success : Theme.textDim
                                     font.family: Theme.fontFamily
                                     font.pixelSize: Theme.iconSize + 2
                                 }
@@ -280,7 +280,7 @@ Item {
                                     Text {
                                         visible: modelData.connected || modelData.paired
                                         text: modelData.connected ? "• Connecté" : "Jumelé"
-                                        color: modelData.connected ? "#4CAF50" : Theme.textDim
+                                        color: modelData.connected ? Theme.success : Theme.textDim
                                         font.family: Theme.fontFamily
                                         font.pixelSize: 9
                                     }
@@ -295,7 +295,7 @@ Item {
                                         id: actLbl
                                         anchors.centerIn: parent
                                         text: modelData.connected ? "✕" : "Connecter"
-                                        color: modelData.connected ? Theme.danger : "#4CAF50"
+                                        color: modelData.connected ? Theme.danger : Theme.success
                                         font.family: Theme.fontFamily
                                         font.pixelSize: 10
                                         font.weight: Theme.fontWeight

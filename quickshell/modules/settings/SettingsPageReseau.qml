@@ -130,7 +130,7 @@ Item {
                 }
                 Rectangle {
                     width: 36; height: 18; radius: 9
-                    color: Networking.wifiEnabled ? "#4CAF50" : Theme.textDim
+                    color: Networking.wifiEnabled ? Theme.success : Theme.textDim
                     Rectangle {
                         width: 14; height: 14; radius: 7
                         color: "white"
@@ -160,7 +160,7 @@ Item {
 
                     Text {
                         text: "󰤨"
-                        color: "#4CAF50"
+                        color: Theme.success
                         font.family: Theme.fontFamily
                         font.pixelSize: Theme.iconSize + 4
                     }
@@ -175,7 +175,7 @@ Item {
                         }
                         Text {
                             text: root.currentIp !== "" ? root.currentIp : "Connecté"
-                            color: "#4CAF50"
+                            color: Theme.success
                             font.family: Theme.fontFamily
                             font.pixelSize: 10
                         }
@@ -299,7 +299,7 @@ Item {
 
                             Text {
                                 text: root.signalIcon(modelData.signal)
-                                color: modelData.active ? "#4CAF50" : Theme.textDim
+                                color: modelData.active ? Theme.success : Theme.textDim
                                 font.family: Theme.fontFamily
                                 font.pixelSize: Theme.iconSize
                             }
@@ -327,7 +327,7 @@ Item {
                                     id: connLbl
                                     anchors.centerIn: parent
                                     text: "Connecter"
-                                    color: "#4CAF50"
+                                    color: Theme.success
                                     font.family: Theme.fontFamily
                                     font.pixelSize: 10
                                     font.weight: Theme.fontWeight

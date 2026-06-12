@@ -58,7 +58,7 @@ PopupWindow {
     function _accentColor(appName, urgency) {
         var n = (appName || "").toLowerCase()
         if (n.indexOf("kdeconnect") >= 0) return "#A78BFA"
-        if (["spotify","vlc","rhythmbox","elisa","clementine","audacious","mpd"].indexOf(n) >= 0) return "#4CAF50"
+        if (["spotify","vlc","rhythmbox","elisa","clementine","audacious","mpd"].indexOf(n) >= 0) return Theme.success
         if ((urgency || 1) >= 2) return "#F96565"
         return Theme.separator
     }

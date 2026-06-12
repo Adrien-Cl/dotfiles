@@ -195,7 +195,7 @@ Item {
 
                         Rectangle {
                             width: 36; height: 18; radius: 9
-                            color: root.muted ? Theme.danger : "#4CAF50"
+                            color: root.muted ? Theme.danger : Theme.success
                             Behavior on color { ColorAnimation { duration: 150 } }
                             Rectangle {
                                 id: volToggleThumb
@@ -306,7 +306,7 @@ Item {
 
                         Rectangle {
                             visible: modelData.active
-                            width: 3; height: 20; radius: 2; color: "#4CAF50"
+                            width: 3; height: 20; radius: 2; color: Theme.success
                             anchors { left: parent.left; verticalCenter: parent.verticalCenter }
                         }
 
@@ -315,7 +315,7 @@ Item {
                             spacing: 10
                             Text {
                                 text: modelData.active ? "󰓃" : "󰓂"
-                                color: modelData.active ? "#4CAF50" : Theme.textDim
+                                color: modelData.active ? Theme.success : Theme.textDim
                                 font.family: Theme.fontFamily; font.pixelSize: Theme.iconSize
                             }
                             Text {
@@ -332,7 +332,7 @@ Item {
                                 Behavior on color { ColorAnimation { duration: 100 } }
                                 Text {
                                     anchors.centerIn: parent; text: "Utiliser"
-                                    color: parent.btnHovered ? "#4CAF50" : Theme.textDim
+                                    color: parent.btnHovered ? Theme.success : Theme.textDim
                                     font.family: Theme.fontFamily; font.pixelSize: 10
                                     font.weight: Theme.fontWeight
                                     Behavior on color { ColorAnimation { duration: 100 } }
@@ -414,7 +414,7 @@ Item {
 
                         Rectangle {
                             width: 36; height: 18; radius: 9
-                            color: root.micMuted ? Theme.danger : "#4CAF50"
+                            color: root.micMuted ? Theme.danger : Theme.success
                             Behavior on color { ColorAnimation { duration: 150 } }
                             Rectangle {
                                 id: micToggleThumb
@@ -499,7 +499,7 @@ Item {
 
                         Rectangle {
                             visible: modelData.active
-                            width: 3; height: 20; radius: 2; color: "#4CAF50"
+                            width: 3; height: 20; radius: 2; color: Theme.success
                             anchors { left: parent.left; verticalCenter: parent.verticalCenter }
                         }
 
@@ -508,7 +508,7 @@ Item {
                             spacing: 10
                             Text {
                                 text: modelData.active ? "󰍬" : "󰍭"
-                                color: modelData.active ? "#4CAF50" : Theme.textDim
+                                color: modelData.active ? Theme.success : Theme.textDim
                                 font.family: Theme.fontFamily; font.pixelSize: Theme.iconSize
                             }
                             Text {
@@ -525,7 +525,7 @@ Item {
                                 Behavior on color { ColorAnimation { duration: 100 } }
                                 Text {
                                     anchors.centerIn: parent; text: "Utiliser"
-                                    color: parent.btnHovered ? "#4CAF50" : Theme.textDim
+                                    color: parent.btnHovered ? Theme.success : Theme.textDim
                                     font.family: Theme.fontFamily; font.pixelSize: 10
                                     font.weight: Theme.fontWeight
                                     Behavior on color { ColorAnimation { duration: 100 } }

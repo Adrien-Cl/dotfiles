@@ -90,7 +90,7 @@ PanelWindow {
 
             property color accentColor: {
                 if (notifCategory === "phone")   return "#A78BFA"
-                if (notifCategory === "media")   return "#4CAF50"
+                if (notifCategory === "media")   return Theme.success
                 if (notifCategory === "critical") return "#F96565"
                 return Theme.separator
             }

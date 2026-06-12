@@ -31,8 +31,8 @@ RowLayout {
 
     function batteryColor(level) {
         if (level <= 15) return Theme.danger
-        if (level <= 30) return "#FFA500"
-        return "#4CAF50"
+        if (level <= 30) return Theme.warning
+        return Theme.success
     }
 
     Process {
@@ -76,14 +76,7 @@ RowLayout {
         Layout.alignment: Qt.AlignVCenter
     }
 
-    Text {
-        text:           "|"
-        color:          Theme.text
-        font.family:    Theme.fontFamily
-        font.pixelSize: Theme.fontSize
-        font.weight:    Font.DemiBold
-        Layout.alignment: Qt.AlignVCenter
-    }
+    BarSeparator {}
 
     Text {
         text:           Qt.formatDate(clock.date, "dd/MM/yyyy")
@@ -94,16 +87,7 @@ RowLayout {
         Layout.alignment: Qt.AlignVCenter
     }
 
-    // Separator
-    Text {
-        visible:        root.hasBattery || KdeConnectState.connected
-        text:           "|"
-        color:          Theme.text
-        font.family:    Theme.fontFamily
-        font.pixelSize: Theme.fontSize
-        font.weight:    Font.DemiBold
-        Layout.alignment: Qt.AlignVCenter
-    }
+    BarSeparator { visible: root.hasBattery || KdeConnectState.connected }
 
     // Battery indicator
     Item {
@@ -140,16 +124,7 @@ RowLayout {
         }
     }
 
-    // Separator between battery and KDE Connect
-    Text {
-        visible:        root.hasBattery && KdeConnectState.connected
-        text:           "|"
-        color:          Theme.text
-        font.family:    Theme.fontFamily
-        font.pixelSize: Theme.fontSize
-        font.weight:    Font.DemiBold
-        Layout.alignment: Qt.AlignVCenter
-    }
+    BarSeparator { visible: root.hasBattery && KdeConnectState.connected }
 
     // KDE Connect indicator
     Text {
@@ -164,16 +139,6 @@ RowLayout {
             cursorShape:  Qt.PointingHandCursor
             onClicked:    root.phoneClicked()
         }
-    }
-
-    Text {
-        visible:        KdeConnectState.connected
-        text:           "|"
-        color:          Theme.text
-        font.family:    Theme.fontFamily
-        font.pixelSize: Theme.fontSize
-        font.weight:    Font.DemiBold
-        Layout.alignment: Qt.AlignVCenter
     }
 
     // Notifications icon + badge

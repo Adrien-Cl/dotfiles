@@ -73,7 +73,7 @@ Item {
                 spacing: 10
                 Text {
                     text: root.updateCount > 0 ? "󰚰" : "󰄬"
-                    color: root.updateCount > 0 ? "#FFA500" : "#4CAF50"
+                    color: root.updateCount > 0 ? Theme.warning : Theme.success
                     font.family: Theme.fontFamily; font.pixelSize: Theme.iconSize
                 }
                 Text {
@@ -89,7 +89,7 @@ Item {
                     color: Qt.rgba(0xFF/255, 0xA5/255, 0, 0.15)
                     Text {
                         id: updLbl; anchors.centerIn: parent; text: "Mettre à jour"
-                        color: "#FFA500"; font.family: Theme.fontFamily; font.pixelSize: 10; font.weight: Theme.fontWeight
+                        color: Theme.warning; font.family: Theme.fontFamily; font.pixelSize: 10; font.weight: Theme.fontWeight
                     }
                     MouseArea {
                         anchors.fill: parent; cursorShape: Qt.PointingHandCursor

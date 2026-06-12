@@ -27,15 +27,7 @@ RowLayout {
         }
     }
 
-    // Separator
-    Text {
-        text:           "|"
-        color:          Theme.text
-        font.family:    Theme.fontFamily
-        font.pixelSize: Theme.fontSize
-        font.weight:    Font.DemiBold
-        Layout.alignment: Qt.AlignVCenter
-    }
+    BarSeparator {}
 
     // Arch Linux icon
     Text {
@@ -51,16 +43,7 @@ RowLayout {
         }
     }
 
-    // Separator (hidden when no media player)
-    Text {
-        text:           "|"
-        color:          Theme.text
-        font.family:    Theme.fontFamily
-        font.pixelSize: Theme.fontSize
-        font.weight:    Font.DemiBold
-        Layout.alignment: Qt.AlignVCenter
-        visible:        mediaPlayer.visible
-    }
+    BarSeparator { visible: mediaPlayer.visible }
 
     // Media player
     MediaPlayer {

@@ -77,8 +77,8 @@ PopupWindow {
 
     function batteryColor(level) {
         if (level <= 15) return Theme.danger
-        if (level <= 30) return "#FFA500"
-        return "#4CAF50"
+        if (level <= 30) return Theme.warning
+        return Theme.success
     }
 
     // — Processus actions —
@@ -152,7 +152,7 @@ PopupWindow {
 
                     Text {
                         text:           "󰄜"
-                        color:          KdeConnectState.connected ? "#4CAF50" : Theme.textDim
+                        color:          KdeConnectState.connected ? Theme.success : Theme.textDim
                         font.family:    Theme.fontFamily
                         font.pixelSize: Theme.iconSize
                     }

@@ -215,7 +215,7 @@ PopupWindow {
                     width:  36
                     height: 18
                     radius: 9
-                    color:  Networking.wifiEnabled ? "#4CAF50" : Theme.textDim
+                    color:  Networking.wifiEnabled ? Theme.success : Theme.textDim
 
                     Rectangle {
                         width:  14
@@ -278,7 +278,7 @@ PopupWindow {
                     width:  36
                     height: 18
                     radius: 9
-                    color:  Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled ? "#4CAF50" : Theme.textDim
+                    color:  Bluetooth.defaultAdapter && Bluetooth.defaultAdapter.enabled ? Theme.success : Theme.textDim
 
                     Rectangle {
                         width:  14
@@ -672,14 +672,14 @@ PopupWindow {
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text:           "󰔄"
-                            color:          root.tempC >= 80 ? Theme.danger : root.tempC >= 60 ? "#FFA500" : "#4CAF50"
+                            color:          root.tempC >= 80 ? Theme.danger : root.tempC >= 60 ? Theme.warning : Theme.success
                             font.family:    Theme.fontFamily
                             font.pixelSize: Theme.iconSize
                         }
                         Text {
                             anchors.horizontalCenter: parent.horizontalCenter
                             text:           root.tempC + "°C"
-                            color:          root.tempC >= 80 ? Theme.danger : root.tempC >= 60 ? "#FFA500" : "#4CAF50"
+                            color:          root.tempC >= 80 ? Theme.danger : root.tempC >= 60 ? Theme.warning : Theme.success
                             font.family:    Theme.fontFamily
                             font.pixelSize: Theme.fontSize
                             font.weight:    Theme.fontWeight

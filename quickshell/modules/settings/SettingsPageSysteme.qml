@@ -220,9 +220,9 @@ Item {
                             return root.tempC + "°C"
                         }
                         property color cardColor: {
-                            if (index === 0) return root.cpuUsage >= 80 ? Theme.danger : root.cpuUsage >= 60 ? "#FFA500" : Theme.text
-                            if (index === 2) return root.diskPct >= 90 ? Theme.danger : root.diskPct >= 75 ? "#FFA500" : Theme.text
-                            if (index === 3) return root.tempC >= 80 ? Theme.danger : root.tempC >= 60 ? "#FFA500" : "#4CAF50"
+                            if (index === 0) return root.cpuUsage >= 80 ? Theme.danger : root.cpuUsage >= 60 ? Theme.warning : Theme.text
+                            if (index === 2) return root.diskPct >= 90 ? Theme.danger : root.diskPct >= 75 ? Theme.warning : Theme.text
+                            if (index === 3) return root.tempC >= 80 ? Theme.danger : root.tempC >= 60 ? Theme.warning : Theme.success
                             return Theme.text
                         }
 
@@ -275,7 +275,7 @@ Item {
 
                 Text {
                     text: "󰚰"
-                    color: root.updateCount > 0 ? "#FFA500" : "#4CAF50"
+                    color: root.updateCount > 0 ? Theme.warning : Theme.success
                     font.family: Theme.fontFamily; font.pixelSize: Theme.iconSize
                 }
                 Text {
@@ -291,7 +291,7 @@ Item {
                     color: Qt.rgba(0xFF/255, 0xA5/255, 0, 0.15)
                     Text {
                         id: updLbl2; anchors.centerIn: parent; text: "Mettre à jour"
-                        color: "#FFA500"; font.family: Theme.fontFamily; font.pixelSize: 10; font.weight: Theme.fontWeight
+                        color: Theme.warning; font.family: Theme.fontFamily; font.pixelSize: 10; font.weight: Theme.fontWeight
                     }
                     MouseArea {
                         anchors.fill: parent; cursorShape: Qt.PointingHandCursor

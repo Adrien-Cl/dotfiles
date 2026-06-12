@@ -471,7 +471,7 @@ Item {
                         Rectangle {
                             visible: parent.isActive
                             anchors { right: parent.right; top: parent.top; margins: 4 }
-                            width: 16; height: 16; radius: 8; color: "#4CAF50"
+                            width: 16; height: 16; radius: 8; color: Theme.success
                             Text { anchors.centerIn: parent; text: "✓"; color: "white"; font.pixelSize: 9; font.weight: Font.Bold; font.family: Theme.fontFamily }
                         }
 
