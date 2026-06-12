@@ -18,6 +18,7 @@ RowLayout {
     signal powerClicked()
     signal phoneClicked()
     signal fileManagerClicked()
+    signal batteryClicked()
 
     function batteryIcon(level, chg) {
         if (chg) return ""
@@ -105,25 +106,37 @@ RowLayout {
     }
 
     // Battery indicator
-    RowLayout {
+    Item {
         visible:          root.hasBattery
-        spacing:          4
         Layout.alignment: Qt.AlignVCenter
+        implicitWidth:    batteryRow.implicitWidth
+        implicitHeight:   batteryRow.implicitHeight
 
-        Text {
-            text:             root.batteryIcon(root.batteryLevel, root.batteryCharging)
-            color:            root.batteryColor(root.batteryLevel)
-            font.family:      Theme.fontFamily
-            font.pixelSize:   Theme.iconSize
-            Layout.alignment: Qt.AlignVCenter
+        RowLayout {
+            id:      batteryRow
+            spacing: 4
+
+            Text {
+                text:             root.batteryIcon(root.batteryLevel, root.batteryCharging)
+                color:            root.batteryColor(root.batteryLevel)
+                font.family:      Theme.fontFamily
+                font.pixelSize:   Theme.iconSize
+                Layout.alignment: Qt.AlignVCenter
+            }
+            Text {
+                text:             root.batteryLevel + "%"
+                color:            root.batteryColor(root.batteryLevel)
+                font.family:      Theme.fontFamily
+                font.pixelSize:   Theme.fontSize
+                font.weight:      Theme.fontWeight
+                Layout.alignment: Qt.AlignVCenter
+            }
         }
-        Text {
-            text:             root.batteryLevel + "%"
-            color:            root.batteryColor(root.batteryLevel)
-            font.family:      Theme.fontFamily
-            font.pixelSize:   Theme.fontSize
-            font.weight:      Theme.fontWeight
-            Layout.alignment: Qt.AlignVCenter
+
+        MouseArea {
+            anchors.fill: parent
+            cursorShape:  Qt.PointingHandCursor
+            onClicked:    root.batteryClicked()
         }
     }
 

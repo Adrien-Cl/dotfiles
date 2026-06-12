@@ -32,6 +32,7 @@ PanelWindow {
     property bool phoneVisible:    false
     property bool mediaVisible:    false
     property bool settingsVisible: false
+    property bool batteryVisible:  false
 
     IpcHandler {
         target: "bar"
@@ -43,6 +44,7 @@ PanelWindow {
             barWindow.powerVisible    = false
             barWindow.btPanelVisible  = false
             barWindow.phoneVisible    = false
+            barWindow.batteryVisible  = false
         }
     }
 
@@ -112,18 +114,21 @@ PanelWindow {
                     barWindow.notifVisible    = !barWindow.notifVisible
                     barWindow.controlVisible  = false
                     barWindow.powerVisible    = false
+                    barWindow.batteryVisible  = false
                     barWindow.settingsVisible = false
                 }
                 onControlClicked: {
                     barWindow.controlVisible  = !barWindow.controlVisible
                     barWindow.notifVisible    = false
                     barWindow.powerVisible    = false
+                    barWindow.batteryVisible  = false
                     barWindow.settingsVisible = false
                 }
                 onPowerClicked: {
                     barWindow.powerVisible    = !barWindow.powerVisible
                     barWindow.notifVisible    = false
                     barWindow.controlVisible  = false
+                    barWindow.batteryVisible  = false
                     barWindow.settingsVisible = false
                 }
                 onPhoneClicked: {
@@ -131,6 +136,15 @@ PanelWindow {
                     barWindow.notifVisible    = false
                     barWindow.controlVisible  = false
                     barWindow.powerVisible    = false
+                    barWindow.batteryVisible  = false
+                    barWindow.settingsVisible = false
+                }
+                onBatteryClicked: {
+                    barWindow.batteryVisible  = !barWindow.batteryVisible
+                    barWindow.notifVisible    = false
+                    barWindow.controlVisible  = false
+                    barWindow.powerVisible    = false
+                    barWindow.phoneVisible    = false
                     barWindow.settingsVisible = false
                 }
                 onFileManagerClicked: Quickshell.execDetached(["thunar"])
@@ -142,7 +156,7 @@ PanelWindow {
     PanelWindow {
         id: backdrop
         screen: barWindow.screen
-        visible: barWindow.notifVisible || barWindow.controlVisible || barWindow.powerVisible || barWindow.btPanelVisible || barWindow.phoneVisible || barWindow.settingsVisible
+        visible: barWindow.notifVisible || barWindow.controlVisible || barWindow.powerVisible || barWindow.btPanelVisible || barWindow.phoneVisible || barWindow.settingsVisible || barWindow.batteryVisible
 
         anchors { top: true; bottom: true; left: true; right: true }
 
@@ -160,6 +174,7 @@ PanelWindow {
                 barWindow.btPanelVisible  = false
                 barWindow.phoneVisible    = false
                 barWindow.settingsVisible = false
+                barWindow.batteryVisible  = false
             }
         }
     }
@@ -211,6 +226,12 @@ PanelWindow {
         shown: barWindow.powerVisible
         bar:   barWindow
         onCloseRequested: barWindow.powerVisible = false
+    }
+
+    BatteryPopup {
+        shown: barWindow.batteryVisible
+        bar:   barWindow
+        onCloseRequested: barWindow.batteryVisible = false
     }
 
     SettingsPanel {

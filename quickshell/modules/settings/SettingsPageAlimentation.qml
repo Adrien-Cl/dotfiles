@@ -12,6 +12,8 @@ Item {
     property real   energyRate:      0
     property string timeRemaining:   ""
     property bool   isCharging:      false
+    property string currentEpp:      ""
+    property bool   eppBusy:         false
 
     Process {
         id: procBattery
@@ -36,6 +38,41 @@ Item {
     Timer {
         interval: 30000; repeat: true; running: true; triggeredOnStart: true
         onTriggered: { if (!procBattery.running) procBattery.running = true }
+    }
+
+    Process {
+        id: procReadEpp
+        command: ["bash", "-c",
+            "cat /sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference 2>/dev/null || echo ''"]
+        running: false
+        stdout: SplitParser {
+            splitMarker: "\n"
+            onRead: data => {
+                var v = data.trim()
+                if (v !== "") root.currentEpp = v
+            }
+        }
+    }
+
+    Process {
+        id: procSetEpp
+        running: false
+        onRunningChanged: {
+            if (!running) {
+                root.eppBusy = false
+                procReadEpp.running = true
+            }
+        }
+    }
+
+    Component.onCompleted: procReadEpp.running = true
+
+    function setEpp(mode) {
+        if (root.eppBusy) return
+        root.eppBusy    = true
+        root.currentEpp = mode
+        procSetEpp.command = ["sudo", "/usr/local/bin/set-cpu-epp", mode]
+        procSetEpp.running = true
     }
 
     function batteryIcon(level, chg) {
@@ -159,6 +196,90 @@ Item {
                         text: root.isCharging ? "JUSQU'AU PLEIN" : "RESTANT"
                         color: Qt.rgba(0xC8/255, 0xD1/255, 0xE9/255, 0.35)
                         font.family: Theme.fontFamily; font.pixelSize: 9; font.weight: Theme.fontWeight
+                    }
+                }
+            }
+        }
+
+        Rectangle { width: parent.width; height: 1; color: Theme.separator }
+
+        // — Mode CPU —
+        Column {
+            width:   parent.width
+            spacing: 10
+
+            Text {
+                text:           "MODE CPU"
+                color:          Theme.textDim; font.family: Theme.fontFamily
+                font.pixelSize: 9; font.weight: Font.Bold; opacity: 0.7
+            }
+
+            Row {
+                width:   parent.width
+                spacing: 8
+
+                Repeater {
+                    model: [
+                        { epp: "power",               icon: "󰁹", label: "Eco"      },
+                        { epp: "balance_power",       icon: "󰾅", label: "Équil.-"  },
+                        { epp: "balance_performance", icon: "󱐋", label: "Équil.+"  },
+                        { epp: "performance",         icon: "󱐌", label: "Perf"     }
+                    ]
+
+                    delegate: Rectangle {
+                        required property var modelData
+
+                        property bool isActive: root.currentEpp === modelData.epp
+                        property bool hov:      false
+
+                        width:  (parent.width - 24) / 4
+                        height: 58
+                        radius: 6
+                        color:  isActive
+                                ? Qt.rgba(0xDD/255, 0xAC/255, 0x26/255, 0.18)
+                                : hov ? Qt.rgba(1, 1, 1, 0.10) : Qt.rgba(1, 1, 1, 0.04)
+                        Behavior on color { ColorAnimation { duration: 120 } }
+
+                        Rectangle {
+                            visible:      parent.isActive
+                            anchors.fill: parent; radius: parent.radius
+                            color:        "transparent"
+                            border.color: Theme.aiIcon; border.width: 1; opacity: 0.6
+                        }
+
+                        Column {
+                            anchors.centerIn: parent; spacing: 4
+
+                            Text {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                text:           modelData.icon
+                                color:          parent.parent.isActive ? Theme.aiIcon : Theme.text
+                                font.family:    Theme.fontFamily; font.pixelSize: Theme.iconSize
+                                Behavior on color { ColorAnimation { duration: 120 } }
+                            }
+                            Text {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                text:           modelData.label
+                                color:          parent.parent.isActive ? Theme.text : Theme.textDim
+                                font.family:    Theme.fontFamily; font.pixelSize: 9; font.weight: Font.DemiBold
+                                Behavior on color { ColorAnimation { duration: 120 } }
+                            }
+                        }
+
+                        Rectangle {
+                            visible:      root.eppBusy && !parent.isActive
+                            anchors.fill: parent; radius: parent.radius
+                            color:        Qt.rgba(0, 0, 0, 0.35)
+                        }
+
+                        MouseArea {
+                            anchors.fill: parent
+                            cursorShape:  root.eppBusy ? Qt.ForbiddenCursor : Qt.PointingHandCursor
+                            hoverEnabled: true
+                            onEntered:    parent.hov = true
+                            onExited:     parent.hov = false
+                            onClicked:    if (!root.eppBusy) root.setEpp(modelData.epp)
+                        }
                     }
                 }
             }

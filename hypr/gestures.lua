@@ -1,0 +1,6 @@
+hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
+hl.gesture({ fingers = 3, direction = "up", action = function()
+    hl.exec_cmd("rofi -show drun")
+end })
+hl.gesture({ fingers = 3, direction = "down", action = "special" })
+hl.gesture({ fingers = 4, direction = "up",   action = "fullscreen" })
