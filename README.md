@@ -42,10 +42,14 @@ My personal Hyprland rice on Arch Linux.
 │   ├── theme.qml           # Colors & sizes
 │   ├── KdeConnectState.qml # KDE Connect state
 │   ├── NotificationState.qml
+│   ├── ai_backend.py       # FastAPI backend (Groq / llama-3.3-70b), tools filesystem
+│   ├── ai_config.json      # Clé API Groq (groq_api_key)
+│   ├── .ai_venv/           # Virtualenv Python (anthropic, fastapi, uvicorn, groq)
 │   └── modules/
 │       ├── Left.qml        # Left bar section
 │       ├── Center.qml      # Center bar section
 │       ├── Right.qml       # Right bar section
+│       ├── AiChatPanel.qml # Panel IA (icône ★ barre gauche)
 │       ├── ControlPanel.qml
 │       ├── BluetoothPanel.qml
 │       ├── KdeConnectPanel.qml

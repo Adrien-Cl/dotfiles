@@ -33,11 +33,12 @@ PanelWindow {
     property bool mediaVisible:    false
     property bool settingsVisible: false
     property bool batteryVisible:  false
+    property bool aiChatVisible:   false
 
     function closeAll() {
         notifVisible = false; controlVisible = false; powerVisible = false
         btPanelVisible = false; phoneVisible = false; settingsVisible = false
-        batteryVisible = false
+        batteryVisible = false; aiChatVisible = false
     }
 
     IpcHandler {
@@ -69,7 +70,11 @@ PanelWindow {
             Left {
                 id: leftModule
                 anchors.centerIn: parent
-                onAiChatRequested:  console.log("AI chat requested")
+                onAiChatRequested: {
+                    var opening = !barWindow.aiChatVisible
+                    barWindow.closeAll()
+                    barWindow.aiChatVisible = opening
+                }
                 onMediaHoverStarted: {
                     mediaHideTimer.stop()
                     barWindow.mediaVisible = true
@@ -143,7 +148,7 @@ PanelWindow {
     PanelWindow {
         id: backdrop
         screen: barWindow.screen
-        visible: barWindow.notifVisible || barWindow.controlVisible || barWindow.powerVisible || barWindow.btPanelVisible || barWindow.phoneVisible || barWindow.settingsVisible || barWindow.batteryVisible
+        visible: barWindow.notifVisible || barWindow.controlVisible || barWindow.powerVisible || barWindow.btPanelVisible || barWindow.phoneVisible || barWindow.settingsVisible || barWindow.batteryVisible || barWindow.aiChatVisible
 
         anchors { top: true; bottom: true; left: true; right: true }
 
@@ -217,6 +222,21 @@ PanelWindow {
         shown: barWindow.settingsVisible
         bar:   barWindow
         onCloseRequested: barWindow.settingsVisible = false
+    }
+
+    Process {
+        id: aiBackendProc
+        command: [
+            "/home/adrien/.config/quickshell/.ai_venv/bin/python",
+            "/home/adrien/.config/quickshell/ai_backend.py"
+        ]
+        Component.onCompleted: running = true
+    }
+
+    AiChatPanel {
+        shown: barWindow.aiChatVisible
+        bar:   barWindow
+        onCloseRequested: barWindow.aiChatVisible = false
     }
 
     OSD {
