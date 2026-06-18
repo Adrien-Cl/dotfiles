@@ -23,7 +23,7 @@ PopupWindow {
             contentRect.opacity = 0
             slideTranslate.y = -10
             root.visible = true
-            procReadEpp.running = true
+            if (!procReadEpp.running) procReadEpp.running = true
             animIn.start()
         } else if (root.visible) {
             animIn.stop()
@@ -57,9 +57,9 @@ PopupWindow {
     property real   energyRate:    0
     property string timeRemaining: ""
 
-    // ── État EPP ─────────────────────────────────────────────────────────────
-    property string currentEpp: ""
-    property bool   eppBusy:    false
+    // ── État mode CPU ────────────────────────────────────────────────────────
+    property string currentMode: ""
+    property bool   eppBusy:     false
 
     // ── Processus ────────────────────────────────────────────────────────────
 
@@ -95,14 +95,13 @@ PopupWindow {
 
     Process {
         id: procReadEpp
-        command: ["bash", "-c",
-            "cat /sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference 2>/dev/null || echo ''"]
+        command: ["bash", "-c", "cat /tmp/qs-cpu-mode 2>/dev/null || echo 'reset'"]
         running: false
         stdout: SplitParser {
             splitMarker: "\n"
             onRead: data => {
                 var v = data.trim()
-                if (v !== "") root.currentEpp = v
+                if (v !== "") root.currentMode = v
             }
         }
     }
@@ -113,16 +112,22 @@ PopupWindow {
         onRunningChanged: {
             if (!running) {
                 root.eppBusy = false
-                procReadEpp.running = true
             }
         }
     }
 
+    Process {
+        id: procWriteMode
+        running: false
+    }
+
     function setEpp(mode) {
         if (root.eppBusy) return
-        root.eppBusy    = true
-        root.currentEpp = mode
-        procSetEpp.command = ["sudo", "/usr/local/bin/set-cpu-epp", mode]
+        root.eppBusy     = true
+        root.currentMode = mode
+        procWriteMode.command = ["bash", "-c", "echo '" + mode + "' > /tmp/qs-cpu-mode"]
+        procWriteMode.running = true
+        procSetEpp.command = ["sudo", "/usr/local/bin/set-acf-mode", mode]
         procSetEpp.running = true
     }
 
@@ -303,16 +308,15 @@ PopupWindow {
 
                     Repeater {
                         model: [
-                            { epp: "power",               icon: "󰁹", label: "Eco"        },
-                            { epp: "balance_power",       icon: "󰾅", label: "Équil.-"    },
-                            { epp: "balance_performance", icon: "󱐋", label: "Équil.+"    },
-                            { epp: "performance",         icon: "󱐌", label: "Perf"       }
+                            { mode: "powersave",   icon: "󰁹", label: "Éco"  },
+                            { mode: "reset",       icon: "󰾅", label: "Auto" },
+                            { mode: "performance", icon: "󱐌", label: "Perf" }
                         ]
 
                         delegate: Rectangle {
                             required property var modelData
 
-                            property bool isActive: root.currentEpp === modelData.epp
+                            property bool isActive: root.currentMode === modelData.mode
                             property bool hov:      false
 
                             width:  (parent.width - 24) / 4
@@ -369,7 +373,7 @@ PopupWindow {
                                 hoverEnabled: true
                                 onEntered:    parent.hov = true
                                 onExited:     parent.hov = false
-                                onClicked:    if (!root.eppBusy) root.setEpp(modelData.epp)
+                                onClicked:    if (!root.eppBusy) root.setEpp(modelData.mode)
                             }
                         }
                     }
@@ -377,12 +381,11 @@ PopupWindow {
 
                 Text {
                     text: {
-                        switch (root.currentEpp) {
-                            case "power":               return "Économies max — fréquences réduites"
-                            case "balance_power":       return "Quotidien — équilibre batterie/perf"
-                            case "balance_performance": return "Modéré — bonnes performances"
-                            case "performance":         return "Perf max — batterie en retrait"
-                            default: return root.currentEpp !== "" ? root.currentEpp : "Lecture en cours…"
+                        switch (root.currentMode) {
+                            case "powersave":   return "Économie max — auto-cpufreq forcé Éco"
+                            case "reset":       return "Automatique — adapté secteur / batterie"
+                            case "performance": return "Perf max — auto-cpufreq forcé Perf"
+                            default: return root.currentMode !== "" ? root.currentMode : "Lecture en cours…"
                         }
                     }
                     color:          Theme.textDim

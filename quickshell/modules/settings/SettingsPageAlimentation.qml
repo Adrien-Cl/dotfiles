@@ -12,7 +12,7 @@ Item {
     property real   energyRate:      0
     property string timeRemaining:   ""
     property bool   isCharging:      false
-    property string currentEpp:      ""
+    property string currentMode:     ""
     property bool   eppBusy:         false
 
     Process {
@@ -42,14 +42,13 @@ Item {
 
     Process {
         id: procReadEpp
-        command: ["bash", "-c",
-            "cat /sys/devices/system/cpu/cpu0/cpufreq/energy_performance_preference 2>/dev/null || echo ''"]
+        command: ["bash", "-c", "cat /tmp/qs-cpu-mode 2>/dev/null || echo 'reset'"]
         running: false
         stdout: SplitParser {
             splitMarker: "\n"
             onRead: data => {
                 var v = data.trim()
-                if (v !== "") root.currentEpp = v
+                if (v !== "") root.currentMode = v
             }
         }
     }
@@ -60,18 +59,24 @@ Item {
         onRunningChanged: {
             if (!running) {
                 root.eppBusy = false
-                procReadEpp.running = true
             }
         }
+    }
+
+    Process {
+        id: procWriteMode
+        running: false
     }
 
     Component.onCompleted: procReadEpp.running = true
 
     function setEpp(mode) {
         if (root.eppBusy) return
-        root.eppBusy    = true
-        root.currentEpp = mode
-        procSetEpp.command = ["sudo", "/usr/local/bin/set-cpu-epp", mode]
+        root.eppBusy     = true
+        root.currentMode = mode
+        procWriteMode.command = ["bash", "-c", "echo '" + mode + "' > /tmp/qs-cpu-mode"]
+        procWriteMode.running = true
+        procSetEpp.command = ["sudo", "/usr/local/bin/set-acf-mode", mode]
         procSetEpp.running = true
     }
 
@@ -220,19 +225,18 @@ Item {
 
                 Repeater {
                     model: [
-                        { epp: "power",               icon: "󰁹", label: "Eco"      },
-                        { epp: "balance_power",       icon: "󰾅", label: "Équil.-"  },
-                        { epp: "balance_performance", icon: "󱐋", label: "Équil.+"  },
-                        { epp: "performance",         icon: "󱐌", label: "Perf"     }
+                        { mode: "powersave",   icon: "󰁹", label: "Éco"  },
+                        { mode: "reset",       icon: "󰾅", label: "Auto" },
+                        { mode: "performance", icon: "󱐌", label: "Perf" }
                     ]
 
                     delegate: Rectangle {
                         required property var modelData
 
-                        property bool isActive: root.currentEpp === modelData.epp
+                        property bool isActive: root.currentMode === modelData.mode
                         property bool hov:      false
 
-                        width:  (parent.width - 24) / 4
+                        width:  (parent.width - 16) / 3
                         height: 58
                         radius: 6
                         color:  isActive
@@ -278,7 +282,7 @@ Item {
                             hoverEnabled: true
                             onEntered:    parent.hov = true
                             onExited:     parent.hov = false
-                            onClicked:    if (!root.eppBusy) root.setEpp(modelData.epp)
+                            onClicked:    if (!root.eppBusy) root.setEpp(modelData.mode)
                         }
                     }
                 }
